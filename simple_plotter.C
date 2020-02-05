@@ -9,7 +9,8 @@ string __nucleon_observable_name__ = "hm_pprot_reco_4mom";
 // string __lepton_observable_name__ = "pmu_4mom";
 // string __nucleon_observable_name__ = "hm_pprot_4mom";
 string __outfile_appendix__ = "";
-string __cuts_string__ = "isRecoChargedLepton == 1 && flagCC0pi == 1 && isRecoProton == 1";
+// string __cuts_string__ = "isRecoChargedLepton == 1 && flagCC0pi == 1 && isRecoProton == 1";
+string __cuts_string__ = "isRecoChargedLepton == 1 && isRecoProton == 1 && isRecoPip == 0 && isRecoPim == 0 && Npi0 == 0 &&  && Nother==0";
 
 string __input_data_folder__ = "stephen_output";
 
@@ -380,38 +381,38 @@ void do_plot(){
   delta_pT_CCQE_hist->SetLineColor(colorCells[color_index]); color_index++;
   delta_pT_CCQE_hist->SetLineWidth(3);
 
-  TH1D* delta_pT_DeltaRes_hist = new TH1D("delta_pT_DeltaRes_hist", __cuts_string__.c_str(), 100, hist_lower_bound, hist_higher_bound);
+  TH1D* delta_pT_other_hist = new TH1D("delta_pT_other_hist", __cuts_string__.c_str(), 100, hist_lower_bound, hist_higher_bound);
   nb_events = selectedEvents->Draw(
-    (__draw_string__ + ">>delta_pT_DeltaRes_hist").c_str(),
-    (__cuts_string__ + " && Mode >= 11 && Mode <= 13").c_str(),
+    (__draw_string__ + ">>delta_pT_other_hist").c_str(),
+    (__cuts_string__ + " && Mode > 2").c_str(),
     "goff"
   );
-  delta_pT_DeltaRes_hist->Scale(1./norm);
-  delta_pT_DeltaRes_hist->SetTitle(Form("SuperFGD (DeltaRes, %d%%)", int((100.*nb_events)/total_nb_events)));
-  delta_pT_DeltaRes_hist->SetLineColor(colorCells[color_index]); color_index++;
-  delta_pT_DeltaRes_hist->SetLineWidth(3);
+  delta_pT_other_hist->Scale(1./norm);
+  delta_pT_other_hist->SetTitle(Form("SuperFGD (Others, %d%%)", int((100.*nb_events)/total_nb_events)));
+  delta_pT_other_hist->SetLineColor(colorCells[color_index]); color_index++;
+  delta_pT_other_hist->SetLineWidth(3);
 
-  TH1D* delta_pT_Other_hist = new TH1D("delta_pT_Other_hist", __cuts_string__.c_str(), 100, hist_lower_bound, hist_higher_bound);
+  TH1D* delta_pT_2p2h_hist = new TH1D("delta_pT_2p2h_hist", __cuts_string__.c_str(), 100, hist_lower_bound, hist_higher_bound);
   nb_events = selectedEvents->Draw(
-    (__draw_string__ + ">>delta_pT_Other_hist").c_str(),
+    (__draw_string__ + ">>delta_pT_2p2h_hist").c_str(),
     (__cuts_string__ + " && Mode == 2").c_str(),
     "goff"
   );
-  delta_pT_Other_hist->Scale(1./norm);
-  delta_pT_Other_hist->SetTitle(Form("SuperFGD (2p2h, %d%%)", int((100.*nb_events)/total_nb_events)));
-  delta_pT_Other_hist->SetLineColor(colorCells[color_index]); color_index++;
-  delta_pT_Other_hist->SetLineWidth(3);
+  delta_pT_2p2h_hist->Scale(1./norm);
+  delta_pT_2p2h_hist->SetTitle(Form("SuperFGD (2p2h, %d%%)", int((100.*nb_events)/total_nb_events)));
+  delta_pT_2p2h_hist->SetLineColor(colorCells[color_index]); color_index++;
+  delta_pT_2p2h_hist->SetLineWidth(3);
 
   delta_pt->cd();
   delta_pT_hist->Draw("HIST");
   delta_pT_CCQE_hist->Draw("HIST SAME");
-  delta_pT_Other_hist->Draw("HIST SAME");
-  delta_pT_DeltaRes_hist->Draw("HIST SAME");
+  delta_pT_2p2h_hist->Draw("HIST SAME");
+  delta_pT_other_hist->Draw("HIST SAME");
 
   TH1D_buffer[__input_file_name__ + "_" + __drawing_variable__ + "_all"] = (TH1D*) delta_pT_hist->Clone();
   TH1D_buffer[__input_file_name__ + "_" + __drawing_variable__ + "_CCQE"] = (TH1D*) delta_pT_CCQE_hist->Clone();
-  TH1D_buffer[__input_file_name__ + "_" + __drawing_variable__ + "_DeltaRes"] = (TH1D*) delta_pT_DeltaRes_hist->Clone();
-  TH1D_buffer[__input_file_name__ + "_" + __drawing_variable__ + "_Other"] = (TH1D*) delta_pT_Other_hist->Clone();
+  TH1D_buffer[__input_file_name__ + "_" + __drawing_variable__ + "_2p2h"] = (TH1D*) delta_pT_2p2h_hist->Clone();
+  TH1D_buffer[__input_file_name__ + "_" + __drawing_variable__ + "_other"] = (TH1D*) delta_pT_other_hist->Clone();
 
   // __legend__ = gPad->BuildLegend(0.55, 0.6, 0.92, 0.92);
   gPad->BuildLegend();

@@ -119,7 +119,8 @@ void fill_variables_expression(){
 
   cout << INFO << "Filling variables expression" << endl;
 
-  __cuts_string__ = "isRecoChargedLepton == 1 && flagCC0pi == 1 && isRecoProton == 1";
+  // __cuts_string__ = "isRecoChargedLepton == 1 && flagCC0pi == 1 && isRecoProton == 1";
+  __cuts_string__ = "isRecoChargedLepton == 1 && isRecoProton == 1 && isRecoPip == 0 && isRecoPim == 0 && Npi0 == 0 &&  && Nother==0";
 
 
   {
